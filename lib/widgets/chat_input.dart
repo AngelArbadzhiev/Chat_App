@@ -1,13 +1,20 @@
+import 'package:Chat_App/models/chat_message_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Chat_App/utils/brand_color.dart';
 import 'package:Chat_App/utils/texfield_styles.dart';
 
 class ChatInput extends StatelessWidget {
-  ChatInput({super.key});
+  final Function(ChatMessageEntity) onSubmit;
+  ChatInput({super.key, required this.onSubmit});
   final controllerMessage = TextEditingController();
   void onSendBtnPressed() {
-    print(controllerMessage.text);
+    final newChatMessage = ChatMessageEntity(
+        text: controllerMessage.text,
+        id: "244",
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        author: Author(username: "angel"));
+    onSubmit(newChatMessage);
   }
 
   @override

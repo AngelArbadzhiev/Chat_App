@@ -6,9 +6,9 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/login_page.dart';
+import 'package:Chat_App/login_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_application_1/main.dart';
+import 'package:Chat_App/main.dart';
 
 void main() {}
