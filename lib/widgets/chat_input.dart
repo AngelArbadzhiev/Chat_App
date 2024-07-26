@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/utils/brand_color.dart';
-import 'package:flutter_application_1/utils/texfield_styles.dart';
+import 'package:Chat_App/utils/brand_color.dart';
+import 'package:Chat_App/utils/texfield_styles.dart';
 
 class ChatInput extends StatelessWidget {
   ChatInput({super.key});

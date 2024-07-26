@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/chat_page.dart';
-import 'package:flutter_application_1/utils/brand_color.dart';
-import 'package:flutter_application_1/utils/spaces.dart';
-import 'package:flutter_application_1/utils/texfield_styles.dart';
-import 'package:flutter_application_1/widgets/login_field.dart';
+import 'package:Chat_App/utils/brand_color.dart';
+import 'package:Chat_App/utils/spaces.dart';
+import 'package:Chat_App/widgets/login_field.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:social_media_buttons/social_media_buttons.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController controllerUsername = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+  final String _mainUrl = "https://www.google.com";
+  static String linkedinUrl = "https://linkedin.com";
+  static String githubUrl = "https://github.com/AngelArbadzhiev";
+  static String instagramUrl = "https://instagram.com";
+  static String facebookUrl = "https://facebook.com";
   void loginUser(context) {
     if (_formkey.currentState != null && _formkey.currentState!.validate()) {
       Navigator.pushReplacementNamed(context, "/chat",
@@ -38,10 +43,16 @@ class LoginPage extends StatelessWidget {
                       color: Colors.black),
                 ),
               ),
-              Image(
-                  image: AssetImage("assets/images/banner.png"),
-                  height: 250,
-                  width: 150),
+              Text(
+                'Welcome back! \n You\'ve been missed!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    color: Colors.blueGrey),
+              ),
+              Image(image: AssetImage("assets/images/banner.png"), height: 200),
+              verticalSpacing(15),
               Form(
                 key: _formkey,
                 child: Column(
@@ -72,14 +83,28 @@ class LoginPage extends StatelessWidget {
                   )),
               verticalSpacing(15),
               GestureDetector(
-                onTap: () {
-                  //TODO: Redirect user to my website
+                onTap: () async {
+                  if (await canLaunchUrl(Uri.parse(_mainUrl))) {
+                    await launchUrl(Uri.parse(_mainUrl));
+                  } else {
+                    throw 'Could not launch $_mainUrl';
+                  }
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text("Find us on: "), Text("somesite.com")],
+                  children: [Text("Find us on: "), Text(_mainUrl)],
                 ),
-              )
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                SocialMediaButton.linkedin(
+                    url: linkedinUrl, color: BrandColor.primaryColor),
+                SocialMediaButton.instagram(
+                    url: instagramUrl, color: BrandColor.primaryColor),
+                SocialMediaButton.github(
+                    url: githubUrl, color: BrandColor.primaryColor),
+                SocialMediaButton.facebook(
+                    url: facebookUrl, color: BrandColor.primaryColor)
+              ])
             ]),
       ),
     ));

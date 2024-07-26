@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/utils/texfield_styles.dart';
+import 'package:Chat_App/utils/texfield_styles.dart';
 
 class LoginField extends StatelessWidget {
   final TextEditingController controller;

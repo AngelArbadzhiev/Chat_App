@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/login_page.dart';
-import 'package:flutter_application_1/chat_page.dart';
+import 'package:Chat_App/login_page.dart';
+import 'package:Chat_App/chat_page.dart';
 
 void main() {
   runApp(ChatApp());
