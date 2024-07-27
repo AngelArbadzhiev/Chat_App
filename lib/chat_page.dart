@@ -67,8 +67,6 @@ class _ChatPageState extends State<ChatPage> {
               alignment: _messages[index].author.username != username
                   ? Alignment.bottomLeft
                   : Alignment.bottomRight,
-              edgeLeft: _messages[index].author.username != username ? 0 : 12,
-              edgeRight: _messages[index].author.username != username ? 12 : 0,
               entity: _messages[index],
             ),
           )),

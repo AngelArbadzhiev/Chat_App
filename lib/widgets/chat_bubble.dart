@@ -5,15 +5,11 @@ import "package:flutter/material.dart";
 class ChatBubble extends StatelessWidget {
   final ChatMessageEntity entity;
   final Alignment alignment;
-  final edgeLeft;
-  final edgeRight;
 
   const ChatBubble(
       {super.key,
       required this.alignment,
-      required this.entity,
-      required this.edgeLeft,
-      this.edgeRight});
+      required this.entity,});
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +19,15 @@ class ChatBubble extends StatelessWidget {
       child: Container(
         constraints:
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
-        padding: EdgeInsets.all(24),
-        margin: EdgeInsets.all(10),
+        padding: EdgeInsets.all(24.0),
+        margin: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
             color: isAuthor ? Theme.of(context).primaryColor : Colors.black87,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
-                bottomLeft: Radius.circular(edgeLeft),
-                bottomRight: Radius.circular(edgeRight))),
+                bottomLeft: Radius.circular(0),
+                bottomRight: Radius.circular(12))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -41,8 +37,8 @@ class ChatBubble extends StatelessWidget {
             ),
             if (entity.imageUrl != null)
               Container(
-                height: 200,
-                  width: MediaQuery.of(context).size.width,
+                  height: 200,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: NetworkImage(entity.imageUrl!)),
