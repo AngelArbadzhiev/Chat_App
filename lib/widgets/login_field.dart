@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:Chat_App/utils/texfield_styles.dart';
+import 'package:flutter/material.dart';
 
 class LoginField extends StatelessWidget {
   final TextEditingController controller;
   final String type;
   final bool obscureTextEnabled;
+
   const LoginField(
       {super.key,
       required this.controller,

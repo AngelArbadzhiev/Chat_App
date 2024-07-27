@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   google_fonts: ^6.2.1
   url_launcher: ^6.3.0
+  json_annotation: ^4.9.0
+  http: any
   social_media_buttons:
     git:
       url: https://github.com/ianfrye0818/social_media_buttons
@@ -50,6 +52,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  json_serializable: ^6.8.0
+  build_runner: ^2.3.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
