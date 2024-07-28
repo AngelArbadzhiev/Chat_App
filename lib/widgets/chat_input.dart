@@ -3,6 +3,9 @@ import 'package:Chat_App/utils/brand_color.dart';
 import 'package:Chat_App/utils/texfield_styles.dart';
 import 'package:Chat_App/widgets/picker.body.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../services/auth_services.dart';
 
 class ChatInput extends StatefulWidget {
   final Function(ChatMessageEntity) onSubmit;
@@ -18,12 +21,13 @@ class _ChatInputState extends State<ChatInput> {
 
   String _selectedImageUrl = "";
 
-  void onSendBtnPressed() {
+  void onSendBtnPressed() async{
+    String? userNameFromCache = await context.read<AuthServices>().getUsername();
     final newChatMessage = ChatMessageEntity(
         text: controllerMessage.text,
         id: "244",
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        author: Author(username: "angel"));
+        author: Author(username: userNameFromCache!));
     if(_selectedImageUrl.isNotEmpty){
       newChatMessage.imageUrl = _selectedImageUrl;
     }
