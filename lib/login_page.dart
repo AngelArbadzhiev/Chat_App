@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_buttons/social_media_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController controllerUsername = TextEditingController();
@@ -17,7 +19,7 @@ class LoginPage extends StatelessWidget {
   static String instagramUrl = "https://instagram.com";
   static String facebookUrl = "https://facebook.com";
 
-  Widget _buildHeader(context) {
+  Widget _buildHeader(BuildContext context) {
     return Column(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
@@ -49,7 +51,7 @@ class LoginPage extends StatelessWidget {
     ]);
   }
 
-  Widget _buildForm(context) {
+  Widget _buildForm(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -80,6 +82,17 @@ class LoginPage extends StatelessWidget {
             },
             child: Text(
               "Log In",
+              style: TextStyle(color: BrandColor.chatInputColor),
+            )),
+        verticalSpacing(12),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: BrandColor.primaryColor),
+            onPressed: () async {
+              await registerUser(context);
+            },
+            child: Text(
+              "Register",
               style: TextStyle(color: BrandColor.chatInputColor),
             )),
       ],
@@ -118,9 +131,118 @@ class LoginPage extends StatelessWidget {
 
   Future<void> loginUser(BuildContext context) async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      await context.read<AuthServices>().loginUser(controllerUsername.text);
-      Navigator.pushReplacementNamed(context, "/chat",
-          arguments: controllerUsername.text);
+      final url = Uri.parse('http://37.63.57.37:3000/login'); // Your server's IP address
+
+      try {
+        final response = await http.post(
+          url,
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({
+            'email': controllerUsername.text,
+            'password': controllerPassword.text,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          // Handle successful login
+          Navigator.pushReplacementNamed(context, "/chat", arguments: controllerUsername.text);
+          print('Login successful');
+        } else {
+          // Handle unsuccessful login
+          final responseBody = json.decode(response.body);
+          print('Login failed: ${responseBody['message']}');
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Login Failed'),
+                content: Text(responseBody['message']),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } catch (error) {
+        print('Error: $error');
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Failed to connect to server. Please try again later.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
+
+  Future<void> registerUser(BuildContext context) async {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      final url = Uri.parse('http://37.63.57.37:3000/register'); // Your server's IP address
+
+      try {
+        final response = await http.post(
+          url,
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({
+            'email': controllerUsername.text,
+            'password': controllerPassword.text,
+          }),
+        );
+
+        if (response.statusCode == 201) {
+          print('User registered successfully');
+          // Optionally, log in the user after registration
+          await loginUser(context);
+        } else {
+          final responseBody = json.decode(response.body);
+          print('Failed to register user: ${responseBody['error']}');
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Registration Failed'),
+                content: Text(responseBody['error']),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } catch (error) {
+        print('Error: $error');
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Failed to connect to server. Please try again later.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
@@ -133,26 +255,20 @@ class LoginPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child:
-                LayoutBuilder(builder: (context, BoxConstraints constraints) {
-              if (constraints.maxWidth > 100) {
+            LayoutBuilder(builder: (context, BoxConstraints constraints) {
+              if (constraints.maxWidth > 600) {
                 return Row(
                   children: [
-                    Spacer(
-                      flex: 1,
-                    ),
+                    Spacer(flex: 1),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [_buildHeader(context), _buildFooter()],
                       ),
                     ),
-                    Spacer(
-                      flex: 1,
-                    ),
+                    Spacer(flex: 1),
                     Expanded(child: _buildForm(context)),
-                    Spacer(
-                      flex: 1,
-                    )
+                    Spacer(flex: 1)
                   ],
                 );
               }
